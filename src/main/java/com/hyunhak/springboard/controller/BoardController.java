@@ -1,6 +1,8 @@
 package com.hyunhak.springboard.controller;
 
-import com.hyunhak.springboard.domain.Board;
+import com.hyunhak.springboard.dto.BoardCreateDto;
+import com.hyunhak.springboard.dto.BoardResponseDto;
+import com.hyunhak.springboard.dto.BoardUpdateDto;
 import com.hyunhak.springboard.service.BoardService;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class BoardController {
     @GetMapping("/board")
     public String view(Model model) {
 
-        ArrayList<Board> boardsList = boardService.findAll();
+        ArrayList<BoardResponseDto> boardsList = boardService.findAll();
 
         model.addAttribute("boards", boardsList);
 
@@ -47,9 +49,9 @@ public class BoardController {
 
     // 게시글 저장
     @PostMapping("/board")
-    public String save(Board board) {
+    public String save(BoardCreateDto dto) {
 
-        boardService.save(board);
+        boardService.save(dto);
 
         return "redirect:/board";
     }
@@ -60,7 +62,7 @@ public class BoardController {
         @PathVariable Long id, // @PathVariable : URL 값 (주소에 붙은 값 ex: /board/3)
         Model model) {
 
-        Board board = boardService.findById(id);
+        BoardResponseDto board = boardService.findById(id);
 
         model.addAttribute("board", board);
 
@@ -70,16 +72,16 @@ public class BoardController {
     // 수정 페이지
     @GetMapping("/board/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        Board board = boardService.findById(id);
+        BoardResponseDto board = boardService.findById(id);
         model.addAttribute("board", board);
         return "board/edit";
     }
 
     // 게시글 수정
     @PostMapping("/board/update/{id}")
-    public String update(@PathVariable Long id, Board board) {
+    public String update(@PathVariable Long id, BoardUpdateDto dto) {
 
-        boardService.update(id, board);
+        boardService.update(id, dto);
 
         return "redirect:/board";
     }

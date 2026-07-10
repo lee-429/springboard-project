@@ -3,8 +3,10 @@ package com.hyunhak.springboard.controller;
 import com.hyunhak.springboard.dto.BoardCreateDto;
 import com.hyunhak.springboard.dto.BoardResponseDto;
 import com.hyunhak.springboard.dto.BoardUpdateDto;
+import com.hyunhak.springboard.entity.CommentEntity;
 import com.hyunhak.springboard.entity.MemberEntity;
 import com.hyunhak.springboard.service.BoardService;
+import com.hyunhak.springboard.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,10 +25,12 @@ public class BoardController {
 
     // 생성자 주입 후 변경할 수 없도록 final 적용
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @Autowired // Spring이 자동으로 해당 타입의 객체(Bean)를 찾아서 주입해주는 기능
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, CommentService commentService) {
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     /*
@@ -61,6 +65,7 @@ public class BoardController {
             return "board/write";
         }
 
+        // 로그인 회원 조회
         MemberEntity loginMember = (MemberEntity) session.getAttribute("loginMember");
 
         // 검증 성공 시 게시글 저장
@@ -75,9 +80,14 @@ public class BoardController {
         @PathVariable Long id, // @PathVariable : URL 값 (주소에 붙은 값 ex: /board/3)
         Model model) {
 
+        // 게시글 조회
         BoardResponseDto board = boardService.findById(id);
 
+        // 해당 게시글의 댓글 조회
+        List<CommentEntity> comments = commentService.findByBoardId(id);
+
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
 
         return "board/detail";
     }
@@ -115,8 +125,10 @@ public class BoardController {
     @PostMapping("/board/delete/{id}")
     public String delete(@PathVariable Long id, HttpSession session) {
 
+        // 로그인 회원 조회
         MemberEntity loginMember = (MemberEntity) session.getAttribute("loginMember");
 
+        // 게시글 삭제
         boardService.delete(id, loginMember);
 
         return "redirect:/board";

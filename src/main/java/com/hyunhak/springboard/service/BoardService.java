@@ -1,13 +1,11 @@
 package com.hyunhak.springboard.service;
 
-import com.hyunhak.springboard.domain.Member;
 import com.hyunhak.springboard.dto.BoardCreateDto;
 import com.hyunhak.springboard.dto.BoardResponseDto;
 import com.hyunhak.springboard.dto.BoardUpdateDto;
 import com.hyunhak.springboard.entity.BoardEntity;
 import com.hyunhak.springboard.entity.MemberEntity;
 import com.hyunhak.springboard.repository.BoardRepository;
-import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +33,7 @@ public class BoardService {
         board.setTitle(dto.getTitle());
         board.setContent(dto.getContent());
 
+        // 로그인 여부 확인
         if (loginMember == null) {
             throw new RuntimeException("로그인이 필요합니다.");
         }
@@ -100,10 +99,12 @@ public class BoardService {
         // Optional에서 실제 엔티티 꺼내기 (없으면 "게시글 없음" 예외 발생)
         BoardEntity entity = board.orElseThrow(() -> new RuntimeException("게시글 없음"));
 
+        // 로그인 여부 확인
         if (loginMember == null) {
             throw new RuntimeException("로그인 돼 있지 않습니다.");
         }
 
+        // 작성자 본인인지 확인
         if (!loginMember.getUsername().equals(entity.getWriter())) {
             throw new RuntimeException("작성자만 수정 할 수 있습니다.");
         }
@@ -119,19 +120,24 @@ public class BoardService {
     // 게시글 삭제
     public void delete(Long id, MemberEntity loginMember) {
 
+        // id로 기존 게시글 조회 (없으면 예외 발생)
         Optional<BoardEntity> board = boardRepository.findById(id);
 
+        // Optional에서 실제 엔티티 꺼내기 (없으면 "게시글 없음" 예외 발생)
         BoardEntity entity = board.orElseThrow(() -> new RuntimeException("게시글 없음"));
 
+        // 로그인 여부 확인
         if (loginMember == null) {
             throw new RuntimeException("로그인 돼 있지 않습니다.");
         }
 
+        // 작성자 본인인지 확인
         if (!loginMember.getUsername().equals(entity.getWriter())) {
             throw new RuntimeException("작성자만 삭제 할 수 있습니다.");
         }
 
-        boardRepository.deleteById(id);
+        // 게시글 삭제
+        boardRepository.delete(entity);
     }
 
 }

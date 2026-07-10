@@ -1,9 +1,13 @@
 package com.hyunhak.springboard.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +25,11 @@ public class BoardEntity {
     private String content;
 
     private String writer;
+
+    // 하나의 게시글에 여러 개의 댓글이 달리는 관계(1:N)
+    // mappedBy = "board" : CommentEntity의 board 필드와 연결
+    @OneToMany(mappedBy = "board",
+               cascade = CascadeType.ALL,
+               orphanRemoval = true)
+    private List<CommentEntity> comments = new ArrayList<>();
 }

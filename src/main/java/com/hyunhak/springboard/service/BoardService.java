@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service // 비즈니스 로직 계층이라는 걸 Spring에 알려줌 (Service 역할)
@@ -46,16 +48,13 @@ public class BoardService {
     }
 
     // 전체 게시글 조회
-    public List<BoardResponseDto> findAll() {
+    public Page<BoardResponseDto> findAll(Pageable pageable) {
 
-        // Repository에서 전체 게시글(Entity) 조회
-        List<BoardEntity> boards = boardRepository.findAll();
+        // Repository에서 페이지 단위로 게시글 조회
+        Page<BoardEntity> boards = boardRepository.findAll(pageable);
 
-        // 화면에 전달할 DTO 목록
-        List<BoardResponseDto> responseDtos = new ArrayList<>();
-
-        // BoardEntity -> BoardResponseDto 변환
-        for (BoardEntity board : boards) {
+        // BoardEntity -> BoardResponseDto 변환 후 반환
+        return boards.map(board -> {
             BoardResponseDto dto = new BoardResponseDto();
 
             dto.setId(board.getId());
@@ -63,11 +62,8 @@ public class BoardService {
             dto.setContent(board.getContent());
             dto.setWriter(board.getWriter());
 
-            responseDtos.add(dto);
-        }
-
-        // DTO 목록 반환
-        return responseDtos;
+            return dto;
+        });
     }
 
     // 게시글 단건 조회

@@ -11,6 +11,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,11 +46,24 @@ public class BoardController {
     */
     // 게시글 목록
     @GetMapping("/board")
-    public String view(Model model) {
+    public String view(Model model,
+                       @PageableDefault(size = 10, sort = "id", direction = Direction.DESC)
+                       Pageable pageable) {
 
-        List<BoardResponseDto> boardsList = boardService.findAll();
+        Page<BoardResponseDto> boardsList = boardService.findAll(pageable);
+
+        // 한 번에 보여줄 페이지 번호 개수
+        int blockLimit = 10;
+
+        // 시작 페이지
+        int startPage = (pageable.getPageNumber() / blockLimit) * blockLimit + 1;
+
+        // 마지막 페이지
+        int endPage = Math.min(startPage + blockLimit - 1, boardsList.getTotalPages());
 
         model.addAttribute("boards", boardsList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "board/list";
     }

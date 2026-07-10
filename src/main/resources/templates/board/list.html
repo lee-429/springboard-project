@@ -14,13 +14,10 @@
       margin-bottom: 20px;
     }
 
-    .top {
-      margin-bottom: 15px;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
     }
 
     th, td {
@@ -44,6 +41,22 @@
     .btn:hover {
       background: #555;
     }
+
+    .paging {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .paging a,
+    .paging strong {
+      margin: 0 5px;
+      text-decoration: none;
+    }
+
+    .paging strong {
+      font-weight: bold;
+      color: red;
+    }
   </style>
 
 </head>
@@ -60,7 +73,7 @@
   환영합니다,
   <span th:text="${session.loginMember.username}"></span>님
 
-  <form th:action="@{/member/logout}" method="post">
+  <form th:action="@{/member/logout}" method="post" style="display:inline;">
     <button type="submit">로그아웃</button>
   </form>
 
@@ -68,6 +81,7 @@
 </div>
 
 <table>
+
   <thead>
   <tr>
     <th>번호</th>
@@ -77,8 +91,8 @@
   </thead>
 
   <tbody>
-  <!-- Thymeleaf로 반복 -->
-  <tr th:each="board : ${boards}">
+
+  <tr th:each="board : ${boards.content}">
     <td>
       <a th:href="@{/board/{id}(id=${board.id})}">
         <span th:text="${board.id}"></span>
@@ -86,10 +100,39 @@
     </td>
 
     <td th:text="${board.title}"></td>
+
     <td th:text="${board.writer}"></td>
   </tr>
+
   </tbody>
+
 </table>
+
+<!-- 페이지네이션 -->
+<div class="paging">
+
+  <a th:if="${!boards.first}"
+     th:href="@{/board(page=${boards.number - 1})}">
+    이전
+  </a>
+
+  <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+
+      <a th:if="${i != boards.number + 1}"
+         th:href="@{/board(page=${i - 1})}"
+         th:text="${i}"></a>
+
+      <strong th:if="${i == boards.number + 1}"
+              th:text="${i}"></strong>
+
+  </span>
+
+  <a th:if="${!boards.last}"
+     th:href="@{/board(page=${boards.number + 1})}">
+    다음
+  </a>
+
+</div>
 
 </body>
 </html>

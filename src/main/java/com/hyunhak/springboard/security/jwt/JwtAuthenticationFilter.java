@@ -40,32 +40,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
 
             // JWT 유효성 검증
-            if (tokenProvider.validateToken(token)) {
+            if (!tokenProvider.validateToken(token)) {
 
-                // JWT의 Subject에서 로그인 ID 추출
-                String loginId = tokenProvider.getLoginIdFromToken(token);
-
-                // 로그인 ID를 이용해 사용자 정보 조회
-                UserDetails userDetails = memberDetailsService.loadUserByUsername(loginId);
-
-                /**
-                 * Spring Security 인증 객체 생성
-                 *
-                 * @param principal 인증된 사용자 정보
-                 * @param credentials 비밀번호 (JWT 인증에서는 사용 안함)
-                 * @param authorities 사용자의 권한 정보
-                 */
-                UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                    );
-
-                // SecurityContext에 인증 정보 저장
-                // 이후 Controller에서 @AuthenticationPrincipal 사용 가능
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json;charset=UTF-8");
+                return;
             }
+
+            // JWT의 Subject에서 로그인 ID 추출
+            String loginId = tokenProvider.getLoginIdFromToken(token);
+
+            // 로그인 ID를 이용해 사용자 정보 조회
+            UserDetails userDetails = memberDetailsService.loadUserByUsername(loginId);
+
+            /**
+             * Spring Security 인증 객체 생성
+             *
+             * @param principal 인증된 사용자 정보
+             * @param credentials 비밀번호 (JWT 인증에서는 사용 안함)
+             * @param authorities 사용자의 권한 정보
+             */
+            UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+                );
+
+            // SecurityContext에 인증 정보 저장
+            // 이후 Controller에서 @AuthenticationPrincipal 사용 가능
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         // 현재 필터 작업 완료 후 다음 필터 실행

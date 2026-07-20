@@ -1,0 +1,31 @@
+.create-container {
+    width: 700px;
+    margin: 40px auto;
+}
+
+.create-box {
+    padding: 30px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.create-box h1 {
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.file-group {
+    margin-bottom: 20px;
+}
+
+.selected-file {
+    margin-top: 10px;
+    padding: 10px;
+
+    background: #f8f8f8;
+    border-radius: 6px;
+}

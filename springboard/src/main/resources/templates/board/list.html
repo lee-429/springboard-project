@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판 목록</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      background: #333;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .btn:hover {
+      background: #555;
+    }
+
+    .paging {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .paging a,
+    .paging strong {
+      margin: 0 5px;
+      text-decoration: none;
+    }
+
+    .paging strong {
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<h1>게시판 목록</h1>
+
+<form th:action="@{/board}" method="get">
+
+  <select name="type">
+    <option value="title" th:selected="${type == 'title'}">제목</option>
+    <option value="writer" th:selected="${type == 'writer'}">작성자</option>
+    <option value="search" th:selected="${type == 'search'}">제목 + 내용</option>
+  </select>
+
+  <input type="text" name="keyword" th:value="${keyword}">
+
+  <button type="submit">검색</button>
+
+</form>
+
+
+<div th:if="${session.loginMember == null}">
+  <a th:href="@{/member/login}" class="btn">로그인</a>
+</div>
+
+<div th:if="${session.loginMember != null}">
+  환영합니다,
+  <span th:text="${session.loginMember.username}"></span>님
+
+  <form th:action="@{/member/logout}" method="post" style="display:inline;">
+    <button type="submit">로그아웃</button>
+  </form>
+
+  <a th:href="@{/board/write}" class="btn">글쓰기</a>
+</div>
+
+<table>
+
+  <thead>
+  <tr>
+    <th>번호</th>
+    <th>제목</th>
+    <th>작성자</th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <tr th:each="board : ${boards.content}">
+    <td>
+      <a th:href="@{/board/{id}(id=${board.id})}">
+        <span th:text="${board.id}"></span>
+      </a>
+    </td>
+
+    <td th:text="${board.title}"></td>
+
+    <td th:text="${board.writer}"></td>
+  </tr>
+
+  </tbody>
+
+</table>
+
+<!-- 페이지네이션 -->
+<div class="paging">
+
+  <a th:if="${!boards.first}"
+     th:href="@{/board(page=${boards.number - 1})}">
+    이전
+  </a>
+
+  <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+
+      <a th:if="${i != boards.number + 1}"
+         th:href="@{/board(
+         page=${i - 1},
+         type=${type},
+         keyword=${keyword}
+         )}"
+         th:text="${i}"></a>
+
+      <strong th:if="${i == boards.number + 1}"
+              th:text="${i}"></strong>
+
+  </span>
+
+  <a th:if="${!boards.last}"
+     th:href="@{/board(page=${boards.number + 1})}">
+    다음
+  </a>
+
+</div>
+
+</body>
+</html>

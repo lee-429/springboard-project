@@ -1,0 +1,31 @@
+.update-container {
+    width: 700px;
+    margin: 40px auto;
+}
+
+.update-box {
+    padding: 30px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.update-box h1 {
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.file-group {
+    margin-bottom: 20px;
+}
+
+.current-file {
+    margin-bottom: 20px;
+    padding: 15px;
+
+    background: #f8f8f8;
+    border-radius: 6px;
+}

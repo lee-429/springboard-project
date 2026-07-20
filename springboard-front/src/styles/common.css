@@ -1,0 +1,265 @@
+.btn {
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  background: #eee;
+  color: #333;
+
+  transition: 0.2s;
+}
+
+
+/* 주요 버튼 */
+.btn.primary {
+  background: #3498db;
+  color: white;
+}
+
+
+/* 삭제 / 위험 버튼 */
+.btn.danger {
+  background: #e74c3c;
+  color: white;
+}
+
+
+/* 성공 버튼 */
+.btn.success {
+  background: #2ecc71;
+  color: white;
+}
+
+
+.btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  font-size: 15px;
+
+  outline: none;
+  transition: 0.2s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  font-size: 15px;
+  resize: vertical;
+
+  outline: none;
+  transition: 0.2s;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.textarea:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+  padding: 40px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #2563eb;
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading p {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 16px;
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #374151;
+}
+
+.empty-state p {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.empty-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,.45);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.modal {
+  width: 360px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  padding: 24px;
+
+  text-align: center;
+}
+
+.modal h2 {
+  margin-bottom: 12px;
+}
+
+.modal p {
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 10px 20px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ddd;
+}
+
+.confirm-btn {
+  background: #ef4444;
+  color: white;
+}
+
+/* =====================
+   Responsive
+===================== */
+
+@media (max-width: 768px) {
+
+    .create-container,
+    .update-container,
+    .board-container,
+    .detail-container {
+        width: auto;
+        margin: 20px 15px;
+    }
+
+
+    .create-box,
+    .update-box,
+    .board-box,
+    .login-box,
+    .signup-box {
+        padding: 20px;
+    }
+
+
+    h1 {
+        font-size: 24px;
+    }
+
+
+    .button-group,
+    .comment-buttons {
+        flex-direction: column;
+    }
+
+
+    .btn {
+        width: 100%;
+    }
+
+}

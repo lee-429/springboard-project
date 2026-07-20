@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>오류</title>
+</head>
+<body>
+
+<h2>오류가 발생했습니다.</h2>
+
+<p th:text="${message}"></p>
+
+<a th:href="@{/board}">목록으로 이동</a>
+
+<a th:if="${boardId != null}"
+   th:href="@{/board/{id}(id=${boardId})}">
+  게시글로 이동
+</a>
+
+</body>
+</html>

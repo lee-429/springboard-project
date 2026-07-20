@@ -1,4 +1,4 @@
-# SpringBoard
+# SpringBoard Full Stack
 
 Spring Boot + React 기반 JWT 인증 게시판 서비스 프로젝트
 

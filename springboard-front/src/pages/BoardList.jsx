@@ -38,6 +38,15 @@ function BoardList() {
     loadBoards(0);
   }
 
+  const clearSearch = () => {
+    setType("");
+    setKeyword("");
+    getBoards(0, "", "").then((response) => {
+      setPage(response.data);
+      setCurrentPage(0);
+    });
+  };
+
   // 페이지 로딩 시 게시글 조회
   useEffect(() => {
     loadBoards(0);
@@ -59,6 +68,10 @@ function BoardList() {
               : "첫 게시글을 작성해보세요."
           }
         />
+
+        <Button onClick={clearSearch}>
+          전체 목록 보기
+        </Button>
 
         {!keyword && (
           <Button onClick={() => navigate("/boards/create")}>

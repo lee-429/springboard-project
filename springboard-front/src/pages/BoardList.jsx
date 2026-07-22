@@ -14,10 +14,13 @@ function BoardList() {
   const [page, setPage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [type, setType] = useState("");
+  const [keyword, setKeyword] = useState("");
+
   const navigate = useNavigate();
 
   const loadBoards = (pageNumber) => {
-    getBoards(pageNumber)
+    getBoards(pageNumber, type, keyword)
       .then((response) => {
 
         console.log(response.data);
@@ -29,6 +32,10 @@ function BoardList() {
       .catch((error) => {
         handleError(error, navigate);
       })
+  }
+
+  const handleSearch = () => {
+    loadBoards(0);
   }
 
   // 페이지 로딩 시 게시글 조회
@@ -44,14 +51,20 @@ function BoardList() {
     return (
       <div className="empty-board">
         <EmptyState
-          icon="📋"
-          title="게시글이 없습니다."
-          description="첫 게시글을 작성해보세요."
+          icon={keyword ? "🔍" : "📋"}
+          title={keyword ? "검색 결과가 없습니다." : "게시글이 없습니다."}
+          description={
+            keyword
+              ? "다른 검색어로 다시 시도해주세요."
+              : "첫 게시글을 작성해보세요."
+          }
         />
 
-        <Button onClick={() => navigate("/boards/create")}>
-          첫 게시글 작성하기
-        </Button>
+        {!keyword && (
+          <Button onClick={() => navigate("/boards/create")}>
+            첫 게시글 작성하기
+          </Button>
+        )}
       </div>
     );
   }
@@ -61,6 +74,27 @@ function BoardList() {
     <div className="board-container">
 
       <h1>게시글 목록</h1>
+
+      <div className="search-box">
+
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
+          <option value="">제목+내용</option>
+          <option value="title">제목</option>
+          <option value="writer">작성자</option>
+        </select>
+
+        <input
+          type="text"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="검색어 입력" 
+        />
+
+        <Button onClick={handleSearch}>검색</Button>
+      </div>
 
       <table className="board-table">
         <thead>

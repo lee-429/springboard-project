@@ -1,8 +1,14 @@
 import api from "./axios";
 
-// 게시글 목록 조회
-export const getBoards = (page = 0) => {
-  return api.get(`/api/boards?page=${page}`);
+// 게시글 목록 조회 + 검색
+export const getBoards = (page = 0, type = "", keyword = "") => {
+  return api.get("/api/boards", {
+    params: {
+      page,
+      type,
+      keyword,
+    },
+  });
 };
 
 // 게시글 상세 조회

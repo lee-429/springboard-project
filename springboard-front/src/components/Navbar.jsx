@@ -18,6 +18,8 @@ function Navbar({ isLogin, setIsLogin }) {
     logout()
       .then(() => {
 
+        console.log("logout click");
+
         toast.success("로그아웃 완료");
 
         localStorage.removeItem("accessToken");
@@ -32,6 +34,12 @@ function Navbar({ isLogin, setIsLogin }) {
 
         handleError(error, navigate);
 
+      })
+      .finally(() => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        setIsLogin(false);
+        navigate("/login");
       });
 
   };

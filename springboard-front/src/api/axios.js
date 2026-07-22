@@ -5,21 +5,29 @@ import axios from "axios";
 const api = axios.create({
 
   // Spring Boot 서버의 기본 주소 설정
-  baseURL: "http://localhost:8080",
+  baseURL: "",
 });
 
 const refreshApi = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "",
 });
 
 api.interceptors.request.use(
   (config) => {
 
-    // 1. localStorage에서 accessToken 가져오기
     const token = localStorage.getItem("accessToken");
 
-    // 2. 토큰이 있으면 Authorization 헤더 추가
-    if (token) {
+    const publicUrls = [
+      "/api/members",
+      "/api/members/login",
+      "/api/members/reissue"
+    ];
+
+    const isPublicUrl = publicUrls.some(
+      (url) => config.url === url
+    );
+
+    if (token && !isPublicUrl) {
       config.headers.Authorization = "Bearer " + token;
     }
 

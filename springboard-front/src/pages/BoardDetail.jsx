@@ -189,7 +189,7 @@ function BoardDetail({ isLogin }) {
             <p>첨부파일 : {board.originalFileName}</p>
 
             <a
-              href={`http://localhost:8080/uploads/${board.storedFileName}`}
+              href={`/uploads/${board.storedFileName}`}
               target="_blank"
               rel="noreferrer"
             >

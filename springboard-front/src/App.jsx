@@ -30,6 +30,8 @@ function App() {
 
       <Routes>
 
+        <Route path="/" element={<Navigate to="/login" />} />
+
         <Route path="/boards" element={<BoardList />} />
 
         <Route path="/boards/:id" element={<BoardDetail isLogin={isLogin}/>} />

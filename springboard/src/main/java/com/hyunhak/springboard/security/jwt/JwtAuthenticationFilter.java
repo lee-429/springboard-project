@@ -33,6 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 요청 헤더에서 Authorization 값 가져오기
         String header = request.getHeader("Authorization");
 
+        System.out.println(
+            "JWT FILTER HEADER = " + header
+        );
+
         // Authorization 헤더가 존재하고 Bearer 토큰 형식인지 확인
         if (header != null && header.startsWith("Bearer ")) {
 

@@ -44,12 +44,15 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
+        // 허용할 프론트엔드 Origin 설정
+        // localhost:5173 → React 개발 서버(Vite)
+        // springboard-api.duckdns.org → 배포된 React 서비스
         configuration.setAllowedOrigins(List.of(
             "http://localhost:5173",
-            "http://3.34.173.97",
-            "http://springboard-api.duckdns.org"
+            "https://springboard-api.duckdns.org"
         ));
 
+        // 허용 HTTP 메서드
         configuration.setAllowedMethods(List.of(
             "GET",
             "POST",
@@ -58,10 +61,13 @@ public class SecurityConfig {
             "OPTIONS"
         ));
 
+        // 모든 헤더 허용 (Authorization 등)
         configuration.setAllowedHeaders(List.of("*"));
 
+        // JWT 사용으로 쿠키 미사용
         configuration.setAllowCredentials(false);
 
+        // 전체 API 적용
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
 

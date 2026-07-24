@@ -46,7 +46,8 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
             "http://localhost:5173",
-            "http://3.34.173.97"
+            "http://3.34.173.97",
+            "http://springboard-api.duckdns.org"
         ));
 
         configuration.setAllowedMethods(List.of(
